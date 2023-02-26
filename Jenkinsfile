@@ -1,13 +1,20 @@
 pipeline {
 	agent any
-
+	tools {
+		maven 'Maven 3.9.0'
+	}
 	stages {
 		stage('Git Checkout') {
 			steps {
-				script {
-					git 'https://github.com/freddy-alexis-ht/Demo-CI-CD.git'
-				}
+				git 'https://github.com/freddy-alexis-ht/Demo-CI-CD.git'
 			}
 		}
+
+		stage('Unit Testing') {
+			steps {
+				sh 'mvn test'
+			}
+		}
+
 	}
 }
