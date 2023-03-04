@@ -73,5 +73,17 @@ pipeline {
 			}
 		}
 
+		stage('Docker Image Build') {
+			steps {
+				script {
+					// Image build: I.e. JOB_NAME: DemoApp / BUILD_ID: 39 => DemoApp:v1.39
+					sh 'docker image build -t $JOB_NAME:v1.$BUILD_ID .'
+					// Tagging: 1) version / 2) latest
+					sh 'docker image tag $JOB_NAME:v1.$BUILD_ID freddyalexis/$JOB_NAME:v1.$BUILD_ID'
+					sh 'docker image tag $JOB_NAME:v1.$BUILD_ID freddyalexis/$JOB_NAME:latest'
+				}
+			}
+		}
+
 	}
 }
