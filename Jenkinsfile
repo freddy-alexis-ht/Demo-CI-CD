@@ -50,7 +50,8 @@ pipeline {
 			steps {
 				script {
 					def readPomVersion = readMavenPom file: 'pom.xml'
-
+					// Validation to choose specific repo: release|snapshot
+					def nexusRepo = readPomVersion.version.endsWith("SNAPSHOT") ? "domingo-snapshot" : "domingo-release"
 					nexusArtifactUploader artifacts: [
 						[
 						artifactId: 'springboot', 
@@ -64,7 +65,8 @@ pipeline {
 					nexusUrl: 'localhost:8081', 
 					nexusVersion: 'nexus3', 
 					protocol: 'http', 
-					repository: 'domingo-release', 
+					//repository: 'domingo-release', 
+					repository: nexusRepo, 
 					//version: '1.0.0'
 					version: "${readPomVersion.version}"
 				}
