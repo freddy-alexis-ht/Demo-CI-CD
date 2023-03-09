@@ -85,5 +85,16 @@ pipeline {
 			}
 		}
 
+		stage('Push Image to DockerHub') {
+			steps {
+				script {
+					withCredentials([string(credentialsId: 'dockerhub-key', variable: 'dockerhubvar')]) {
+						sh 'docker login -u freddyalexis -p ${dockerhubvar}'
+						sh 'docker image push freddyalexis/$JOB_NAME:v1.$BUILD_ID'
+						sh 'docker image push freddyalexis/$JOB_NAME:latest'
+					}
+				}
+			}
+		}
 	}
 }
